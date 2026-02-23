@@ -45,7 +45,7 @@ build:
 # ビルドしたバイナリをシステムのPATH（/usr/local/bin）にインストールする（※sudoが必要な場合があります）
 install: build
 	@echo "==> インストール中: $(INSTALL_DIR)/$(APP_NAME)"
-	install -m 755 $(APP_NAME) $(INSTALL_DIR)
+	install -m 755 $(APP_NAME) $(INSTALL_DIR)/$(APP_NAME)
 	@echo "==> インストール完了！"
 
 # ビルド成果物の削除
