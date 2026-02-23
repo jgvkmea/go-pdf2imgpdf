@@ -24,7 +24,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// 出力ディレクトリの作成
+	imgpdfDir := filepath.Join(dirPath, "imgpdf")
+	if err := os.MkdirAll(imgpdfDir, 0755); err != nil {
+		fmt.Printf("エラー: 出力ディレクトリの作成に失敗しました (%v)\n", err)
+		os.Exit(1)
+	}
+
 	fmt.Printf("ディレクトリ '%s' 内のPDFを処理します...\n", dirPath)
+	fmt.Printf("出力先: %s\n", imgpdfDir)
 	fmt.Println("--------------------------------------------------")
 
 	// ディレクトリ内を走査
@@ -35,6 +43,10 @@ func main() {
 
 		// ディレクトリ自体はスキップ
 		if info.IsDir() {
+			// imgpdfディレクトリはスキップ
+			if path == imgpdfDir {
+				return filepath.SkipDir
+			}
 			return nil
 		}
 
@@ -52,7 +64,7 @@ func main() {
 		// 出力ファイル名の生成
 		baseName := strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
 		outFileName := fmt.Sprintf("%s_image.pdf", baseName)
-		outPath := filepath.Join(filepath.Dir(path), outFileName)
+		outPath := filepath.Join(imgpdfDir, outFileName)
 
 		fmt.Printf("変換中: %s\n", info.Name())
 
